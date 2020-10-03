@@ -16,11 +16,16 @@ def home(request):
     return render(request, 'accounts/dashboard.html', context )
 
 def products(request):
-    products = Product.object.all()
+    products = Product.objects.all()
     return render(request, 'accounts/products.html')
 
     return render(request, 'accounts/products.html', {'products':products})
 
-def customers(request):
+def customers(request, pk_test):
     customers = Customer.objects.get(id=pk_test)
-    return render(request, 'accounts/customers.html')
+
+    orders = customers.order_set.all()
+    order_count = orders.count()
+
+    context = {'customers':customers, 'orders':orders, 'order_count':order_count}
+    return render(request, 'accounts/customers.html', context)
